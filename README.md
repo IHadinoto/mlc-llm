@@ -11,10 +11,10 @@ This guide will help you set up and use the MLC-LLM ChatModule to interact with 
 
         bash
 
-        Copy code
-
-        `conda create --name mlc-llm python=3.10
-        conda activate mlc-llm`
+```
+        conda create --name mlc-llm python=3.10
+        conda activate mlc-llm
+```
 
 2.  **GPU Setup for Colab**:
 
@@ -27,9 +27,9 @@ This guide will help you set up and use the MLC-LLM ChatModule to interact with 
 
         bash
 
-        Copy code
-
-        `!nvidia-smi`
+```
+        !nvidia-smi
+```
 
 4.  **Install MLC-AI and MLC-LLM Packages**:
 
@@ -37,9 +37,9 @@ This guide will help you set up and use the MLC-LLM ChatModule to interact with 
 
         bash
 
-        Copy code
-
-        `!pip install --pre --force-reinstall mlc-ai-nightly-cu118 mlc-llm-nightly-cu118 -f https://mlc.ai/wheels`
+```
+        !pip install --pre --force-reinstall mlc-ai-nightly-cu118 mlc-llm-nightly-cu118 -f https://mlc.ai/wheels
+```
 
 ### Download the Model Weights and Libraries
 
@@ -49,9 +49,9 @@ This guide will help you set up and use the MLC-LLM ChatModule to interact with 
 
         bash
 
-        Copy code
-
-        `!git lfs install`
+```
+        !git lfs install
+```
 
 2.  **Download Prebuilt Libraries and Llama 2 Model**:
 
@@ -59,21 +59,21 @@ This guide will help you set up and use the MLC-LLM ChatModule to interact with 
 
         bash
 
-        Copy code
-
-        `!mkdir -p dist
+```
+        !mkdir -p dist
         !git clone https://github.com/mlc-ai/binary-mlc-llm-libs.git dist/prebuilt_libs
-        !cd dist && git clone https://huggingface.co/mlc-ai/Llama-2-7b-chat-hf-q4f16_1-MLC`
+        !cd dist && git clone https://huggingface.co/mlc-ai/Llama-2-7b-chat-hf-q4f16_1-MLC
+```
 
 3.  **Restart Runtime**:
 
     -   After downloading, you'll need to restart the runtime because the notebook won't automatically detect the newly installed module:
 
         bash
-
-        Copy code
-
-        `exit()`
+        
+```
+        exit()
+```
 
 ### Using the ChatModule
 
@@ -83,61 +83,60 @@ This guide will help you set up and use the MLC-LLM ChatModule to interact with 
 
         python
 
-        Copy code
-
-        `from mlc_llm import ChatModule
+```
+        from mlc_llm import ChatModule
         from mlc_llm.callback import StreamToStdout
 
         cm = ChatModule(
             model="dist/Llama-2-7b-chat-hf-q4f16_1-MLC",
             model_lib_path="dist/prebuilt_libs/Llama-2-7b-chat-hf/Llama-2-7b-chat-hf-q4f16_1-cuda.so"
-        )`
-
+        )
+```
     -   For other platforms (e.g., Linux Vulkan, macOS Metal), update `model_lib_path` accordingly:
 
         -   Vulkan: `Llama-2-7b-chat-hf-q4f16_1-vulkan.so`
         -   Metal: `Llama-2-7b-chat-hf-q4f16_1-metal.so`
+        
 2.  **Chat with the Model**:
 
     -   To generate responses from the model, you can pass prompts like this:
 
         python
-
-        Copy code
-
-        `output = cm.generate(
+```
+        output = cm.generate(
             prompt="When was Python released?",
             progress_callback=StreamToStdout(callback_interval=2),
-        )`
+        )
+```
 
     -   For chat-style interactions, use:
 
         python
-
-        Copy code
-
-        `prompt = input("Prompt: ")
-        output = cm.generate(prompt=prompt, progress_callback=StreamToStdout(callback_interval=2))`
+        
+```
+        prompt = input("Prompt: ")
+        output = cm.generate(prompt=prompt, progress_callback=StreamToStdout(callback_interval=2))
+```
 
 3.  **Check the Chatbot's Generation Speed**:
 
     -   To check performance statistics:
 
         python
-
-        Copy code
-
-        `print(cm.stats())`
+        
+```
+        print(cm.stats())
+```
 
 4.  **Reset the Chat History**:
 
     -   If you want to reset the model's chat history:
 
         python
-
-        Copy code
-
-        `cm.reset_chat()`
+        
+```
+        cm.reset_chat()
+```
 
 ### Benchmarking the Model
 
@@ -145,8 +144,7 @@ This guide will help you set up and use the MLC-LLM ChatModule to interact with 
     -   To benchmark the model's performance, you can use `benchmark_generate`. This method measures how fast the model generates tokens for a given prompt:
 
         python
-
-        Copy code
-
-        `print(cm.benchmark_generate(prompt="What is benchmark?", generate_length=512))
-        cm.stats()`
+```
+        print(cm.benchmark_generate(prompt="What is benchmark?", generate_length=512))
+        cm.stats()
+```
